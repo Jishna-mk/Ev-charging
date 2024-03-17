@@ -1,0 +1,65 @@
+
+{% block content %}
+<style>
+    /* Style for the label */
+    .link {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .link:hover {
+        color: rgb(37, 25, 25);
+        text-decoration: none;
+    }
+
+    /* Style for the fields */
+    .label-tag {
+        color: bisque;
+    }
+    .form-group select,
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"] {
+        width: 80%;
+        border: 1px solid rgb(173, 173, 173);
+        padding: 8px;
+        margin: 5px 0;
+        border-radius: 5px;
+    
+    }
+</style>
+{% for message in messages %}
+<div class="alert alert-danger alert-dismissible fade show" style="position: fixed;z-index: 90;right:100px;top:10px"
+    role="alert">
+    <strong>{{message}} !!!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+<div class="d-flex justify-content-center align-items-center " style="height: 100vh; border-radius: 30px;">
+    <div class="container mt-5 p-3" style="border-radius: 30px;">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6" style="border-radius: 30px;">
+                <div class="bg-primary py-2 px-3 px-sm-3" style="border-radius:15px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                    <form class="py-5" action="" method="POST">
+                        {% csrf_token %}
+                        <div class="text-center"> <!-- Center the form fields and labels -->
+                            {% for field in form %}
+                            <div class="form-group">
+                                <label for="{{ field.id_for_label }}" class="label-tag">{{ field.label }}:</label><br>
+                                {{ field }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <button class="btn btn-dark btn-block border-0 py-2" type="submit" style="max-width: 150px; align-items: center; margin-left: 175px;">Register</button>
+                        </div><br>
+                        <p class="text-center text-dark">Already have an account? <a href="{% url 'signin' %}" class="link">Login Here</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
