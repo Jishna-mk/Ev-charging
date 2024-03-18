@@ -31,4 +31,4 @@ def admin_signout(request):
     return redirect("admin_signin")  
 
 def dashboard(request):
-    return render(request,"dashboard.html")
+    return render(request,"admin/dashboard.html")

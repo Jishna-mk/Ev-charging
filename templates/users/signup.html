@@ -1,4 +1,4 @@
-
+{% extends "index.html" %}
 {% block content %}
 <style>
     /* Style for the label */
@@ -14,7 +14,7 @@
 
     /* Style for the fields */
     .label-tag {
-        color: bisque;
+        color: rgb(241, 39, 21);
     }
     .form-group select,
     .form-group input[type="text"],
@@ -41,7 +41,7 @@
     <div class="container mt-5 p-3" style="border-radius: 30px;">
         <div class="row justify-content-center align-items-center">
             <div class="col-md-6" style="border-radius: 30px;">
-                <div class="bg-primary py-2 px-3 px-sm-3" style="border-radius:15px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                <div class=" py-2 px-3 px-sm-3" style="border-radius:15px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
                     <form class="py-5" action="" method="POST">
                         {% csrf_token %}
                         <div class="text-center"> <!-- Center the form fields and labels -->
