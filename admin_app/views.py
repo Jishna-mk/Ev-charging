@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 
 from datetime import timedelta
+from station_app.models import StationProfile
 from django.utils import timezone
 # Create your views here.
 
@@ -30,5 +31,18 @@ def admin_signout(request):
     logout(request)
     return redirect("admin_signin")  
 
+
+    
+
 def dashboard(request):
-    return render(request,"admin/dashboard.html")
+    station = StationProfile.objects.all().order_by("-id")
+    return render(request,"admin/dashboard.html",{"station":station})
+
+
+
+def approvestation(request,s_id):
+    station = User.objects.get(id = s_id)
+    station.is_active = True
+    station.save()
+    messages.success(request,"Approved as Station")
+    return redirect("dashboard")
