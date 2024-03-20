@@ -1,0 +1,16 @@
+<!-- add_station.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Station</title>
+</head>
+<body>
+    <h2>Add Station</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

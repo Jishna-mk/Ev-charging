@@ -1,0 +1,56 @@
+<!-- view_stations.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Stations</title>
+</head>
+<body>
+    <h2>Stations</h2>
+    <ul>
+        {% for station in stations %}
+        <li>
+            {{ station.station_name }}
+            {{ station.station_phone }}
+            {{ station.station_address }}
+            {{ station.station_email }}
+            {{ station.station_caption }}
+            {{ station.station_area }}
+            {%if station.station_image%}
+            
+            <img src="{{ station.station_image.url }}" class="img-fluid" alt=" Image" style="max-height: 300px; width: 50%;">
+            {% endif %}
+            <!-- {% if station.station_latitude and station.station_longitude %}
+            <div id="map" style="width: 600px; height: 450px;"></div>
+            <script>
+                function initMap() {
+                    var stationLocation = [{{ station.station_latitude }}, {{ station.station_longitude }}];
+                    var map = L.map('map').setView(stationLocation, 15);
+            
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+            
+                    L.marker(stationLocation).addTo(map);
+                }
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js" integrity="sha512-KM9G2isjSJi36gGgLavXnWazLAcZMkvh3GVIvb/5FekFwHkEDhLGBYVVMv0LvW30ry6Gq4NpIPmK/zKVZmIo7w==" crossorigin=""></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" integrity="sha512-1b6fDI7FZQ7vzh9dLLKBQ5ZkZnoJ+KDmptn1H8sQ8WbWIR5PR95uGhVtJvoWzAtr6YiOf1MQa7qLxHbB0DPScw==" crossorigin=""/>
+            <script>
+                initMap();
+            </script>
+            {% endif %}
+            
+            
+             -->
+
+            
+            <a href="{% url 'edit_station' station.station_ID %}">Edit</a> 
+            <a href="{% url 'delete_station' station.station_ID %}" style="color: red;" onclick="return confirm('Are you sure you want to delete {{ station.station_name }}?')">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_station' %}">Add Station</a>
+</body>
+</html>
+

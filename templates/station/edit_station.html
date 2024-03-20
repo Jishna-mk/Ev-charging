@@ -1,0 +1,20 @@
+<!-- edit_station.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Station</title>
+</head>
+<body>
+    <h2>Edit Station</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if form.instance.station_image %}
+        <img src="{{ form.instance.station_image.url }}" alt="Station Image" style="max-width: 300px; max-height: 300px;">
+        {% endif %}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+

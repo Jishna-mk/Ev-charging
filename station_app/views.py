@@ -81,3 +81,38 @@ def stationsignout(request):
     logout(request)
     return redirect('index')
 
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Station
+from .forms import StationForm
+
+def add_station(request):
+    if request.method == 'POST':
+        form = StationForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('view_stations')
+    else:
+        form = StationForm()
+    return render(request, 'station/add_station.html', {'form': form})
+
+def view_stations(request):
+    stations = Station.objects.all()
+    return render(request, 'station/view_station.html', {'stations': stations})
+def edit_station(request, station_id):
+    station = get_object_or_404(Station, station_ID=station_id)
+    if request.method == 'POST':
+        form = StationForm(request.POST, request.FILES, instance=station)
+        if form.is_valid():
+            form.save()
+            return redirect('view_stations')
+    else:
+        form = StationForm(instance=station)
+    return render(request, 'station/edit_station.html', {'form': form})
+
+def delete_station(request, station_id):
+    station = get_object_or_404(Station, station_ID=station_id)
+    if request.method == 'POST':
+        station.delete()
+        return redirect('view_stations')
+    # For GET request, display a confirmation message
+    return redirect('view_stations')
