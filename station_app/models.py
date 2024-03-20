@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class StationProfile(models.Model):
+   
     Phone_Number=models.IntegerField()
     Address=models.CharField(max_length=250)
     Profile_Image=models.FileField(upload_to="images",null=True,blank=True)
@@ -24,5 +25,6 @@ class Station(models.Model):
     # station_longitude=models.CharField(max_length=200,null=True,blank=True)
     station_image=models.ImageField(null=True ,blank=True,upload_to="simages")
     station_area=models.CharField(max_length=200)
+    slots=models.IntegerField(null=True,blank=True)
 
 

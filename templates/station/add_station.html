@@ -1,16 +1,51 @@
-<!-- add_station.html -->
-
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "station/details.html" %}
+{% block content %}
     <title>Add Station</title>
-</head>
-<body>
-    <h2>Add Station</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html>
+    <style>
+       
+#add-station-form {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: rgba(188, 22, 4, 0.35) 0px 5px 15px;
+}
+
+#add-station-form input[type="text"],
+#add-station-form input[type="email"],
+#add-station-form textarea {
+    width: 80%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#add-station-form textarea {
+    height: 100px;
+}
+
+#add-station-form button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#add-station-form button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+    <h2 class="text-center">Add Station</h2>
+    <div class="container col-md-6 p-5 mx-auto mt-5 mb-5" style=" border-radius: 10%;">
+        <form method="post" enctype="multipart/form-data" id="add-station-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% endblock %}
+

@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from datetime import timedelta
 from .forms import StationProfileForm
+from .models import StationProfile
 # Create your views here.
 def details(request):
     return render(request,"station\details.html")
@@ -66,7 +67,7 @@ def stationsignin(request):
             login(request, user1)
             group = request.user.groups.all()[0].name
             if(group == "station"):
-                return redirect('details')
+                return redirect('view_stations')
             else:
                 messages.info(request,'Username or Password Incorrect')
                 return redirect("stationsignout")
@@ -98,6 +99,8 @@ def add_station(request):
 def view_stations(request):
     stations = Station.objects.all()
     return render(request, 'station/view_station.html', {'stations': stations})
+
+
 def edit_station(request, station_id):
     station = get_object_or_404(Station, station_ID=station_id)
     if request.method == 'POST':
@@ -109,10 +112,13 @@ def edit_station(request, station_id):
         form = StationForm(instance=station)
     return render(request, 'station/edit_station.html', {'form': form})
 
-def delete_station(request, station_id):
-    station = get_object_or_404(Station, station_ID=station_id)
-    if request.method == 'POST':
-        station.delete()
-        return redirect('view_stations')
-    # For GET request, display a confirmation message
+def delete_station(request,pk):
+    station =Station.objects.get(station_ID=pk)
+    station.delete()
+    messages.info(request,"station details deleted")
     return redirect('view_stations')
+   
+
+def station_profiles(request):
+    station_profile=get_object_or_404( StationProfile,user=request.user)
+    return render(request,'station/profile.html',{'station_profile':station_profile})   

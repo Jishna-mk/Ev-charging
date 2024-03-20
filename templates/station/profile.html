@@ -1,0 +1,33 @@
+{% extends "station/details.html" %}
+{% load static %}
+
+{% block content %}
+{% for message in messages %}
+<div class="alert alert-danger alert-dismissible fade show" style="position: fixed;z-index: 90;right:100px;top:10px"
+    role="alert">
+    <strong>{{message}} !!!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+  <div class="container mt-5">
+    <h2>Your Profile</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="{{ station_profile.Profile_Image.url }}" class="card-img-top" alt="{{ manager_profile.user.username }}" height="200"  >
+          <div class="card-body">
+            <h5 class="card-title">{{ station_profile.user.username }}</h5>
+            <p class="card-text"><strong>Address:</strong> {{ station_profile.Address }}</p>
+            <p class="card-text"><strong>Phone Number:</strong> {{ station_profile.Phone_Number }}</p>
+           
+            <!-- Add other profile fields as needed -->
+
+            <a href="" class="btn btn-primary">View Messages</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

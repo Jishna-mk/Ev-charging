@@ -6,7 +6,7 @@ from .models import StationProfile
 class StationProfileForm(ModelForm):
     class Meta:
         model = StationProfile
-        fields = ["Address","Phone_Number","Profile_Image"]
+        fields = ["Phone_Number","Profile_Image","Address",]
 
         widgets = {
             'Phone_Number': TextInput(attrs={"class":"form-control","placeholder":"Enter Phone number"}),

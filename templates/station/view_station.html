@@ -1,56 +1,27 @@
-<!-- view_stations.html -->
+{% extends "station/details.html" %}
+{% block content %}
+<div class="container mt-5 mb-5">
+<div class="row">
+    {% for station in stations %}
+    <div class="col-md-6 mb-4">
+        <div class="card" style="width: 18rem;">
+            <img src="{{ station.station_image.url }}" class="card-img-top" alt="Station Image">
+            <div class="card-body">
+                <h5 class="card-title">{{ station.station_name }}</h5>
+                <p class="card-text">
+                    Phone: {{ station.station_phone }}<br>
+                    Address: {{ station.station_address }}<br>
+                    Email: {{ station.station_email }}<br>
+                    Caption: {{ station.station_caption }}<br>
+                    Area: {{ station.station_area }}
+                </p>
+                <a href="{% url 'edit_station' station.station_ID %}" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
+                <a href="{% url 'delete_station' station.station_ID %}" class="btn btn-danger" onclick="return confirm('Are you sure want to delete?')"><i class="fa fa-trash"></i> Delete</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>View Stations</title>
-</head>
-<body>
-    <h2>Stations</h2>
-    <ul>
-        {% for station in stations %}
-        <li>
-            {{ station.station_name }}
-            {{ station.station_phone }}
-            {{ station.station_address }}
-            {{ station.station_email }}
-            {{ station.station_caption }}
-            {{ station.station_area }}
-            {%if station.station_image%}
-            
-            <img src="{{ station.station_image.url }}" class="img-fluid" alt=" Image" style="max-height: 300px; width: 50%;">
-            {% endif %}
-            <!-- {% if station.station_latitude and station.station_longitude %}
-            <div id="map" style="width: 600px; height: 450px;"></div>
-            <script>
-                function initMap() {
-                    var stationLocation = [{{ station.station_latitude }}, {{ station.station_longitude }}];
-                    var map = L.map('map').setView(stationLocation, 15);
-            
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    }).addTo(map);
-            
-                    L.marker(stationLocation).addTo(map);
-                }
-            </script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js" integrity="sha512-KM9G2isjSJi36gGgLavXnWazLAcZMkvh3GVIvb/5FekFwHkEDhLGBYVVMv0LvW30ry6Gq4NpIPmK/zKVZmIo7w==" crossorigin=""></script>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" integrity="sha512-1b6fDI7FZQ7vzh9dLLKBQ5ZkZnoJ+KDmptn1H8sQ8WbWIR5PR95uGhVtJvoWzAtr6YiOf1MQa7qLxHbB0DPScw==" crossorigin=""/>
-            <script>
-                initMap();
-            </script>
-            {% endif %}
-            
-            
-             -->
-
-            
-            <a href="{% url 'edit_station' station.station_ID %}">Edit</a> 
-            <a href="{% url 'delete_station' station.station_ID %}" style="color: red;" onclick="return confirm('Are you sure you want to delete {{ station.station_name }}?')">Delete</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'add_station' %}">Add Station</a>
-</body>
-</html>
-
+</div>
+{% endblock %}
