@@ -96,3 +96,42 @@ def view_details(request,station_ID):
     station=get_object_or_404(Station,pk=station_ID)
 
     return render(request,"users/viewdetails.html",{'station':station})
+
+from django.utils import timezone
+from .models import Booking
+
+def book_slot(request, station_id):
+    station = get_object_or_404(Station, station_ID=station_id)
+
+    if request.method == 'POST':
+        date = request.POST.get('date')
+        start_time_str = request.POST.get('start_time')
+        end_time_str = request.POST.get('end_time')
+        phone_number = request.POST.get('phone_number')
+        slots = request.POST.get('slots')  
+
+        start_time = timezone.make_aware(timezone.datetime.combine(timezone.now().date(), timezone.datetime.strptime(start_time_str, '%H:%M').time()))
+        end_time = timezone.make_aware(timezone.datetime.combine(timezone.now().date(), timezone.datetime.strptime(end_time_str, '%H:%M').time()))
+
+        if Booking.objects.filter(station=station, slots=slots,date=date, start_time__lt=end_time, end_time__gt=start_time).exists():
+            error_message = 'This time slot is already booked. Please select another slot.'
+            return render(request, 'viewdetails.html', {'station': station, 'error_message': error_message})
+        
+        booking = Booking(
+            user=request.user,
+            station=station,
+            start_time=start_time,
+            end_time=end_time,
+            date=date,
+            phone_number=phone_number,
+            slots=slots  # Save the number of slots
+        )
+        booking.save()
+
+        return redirect('booking_details')  # Redirect to the booking details page
+
+    return render(request, 'users/user_booking.html', {'station': station})
+
+
+def booking_details(request):
+    return render(request,"users/booking_details.html")
