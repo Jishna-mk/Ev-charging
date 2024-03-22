@@ -127,10 +127,10 @@
                         Phone: {{ station.station_phone }}<br>
                         Address: {{ station.station_address }}<br>
                         Email: {{ station.station_email }}<br>
-                        Caption: {{ station.station_caption }}<br>
+                    
                         Area: {{ station.station_area }}
                     </p>
-                    <a href="" class="btn btn-primary">View station</a>
+                    <a href="{%url 'view_details' station.station_ID %}" class="btn btn-primary">View station/Booking</a>
                     
                 </div>
             </div>

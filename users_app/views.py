@@ -91,3 +91,8 @@ def station_profile(request):
     # station_profiles = StationProfile.objects.filter(some_criteria)
 
     return render(request, 'users/station_profile.html', {'station_profiles': station_profiles})
+
+def view_details(request,station_ID):
+    station=get_object_or_404(Station,pk=station_ID)
+
+    return render(request,"users/viewdetails.html",{'station':station})
