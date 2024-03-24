@@ -21,8 +21,7 @@ class Station(models.Model):
     station_phone=models.CharField(max_length=200)
     station_email=models.EmailField(max_length=200)
     station_caption=models.CharField(max_length=200)
-    # station_latitude=models.CharField(max_length=200,null=True,blank=True)
-    # station_longitude=models.CharField(max_length=200,null=True,blank=True)
+    
     station_image=models.ImageField(null=True ,blank=True,upload_to="simages")
     station_area=models.CharField(max_length=200)
     slots=models.IntegerField(null=True,blank=True)

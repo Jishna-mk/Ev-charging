@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Slot</title>
+    <!-- Add any CSS stylesheets or links here -->
+    <style>
+        /* Add your CSS styling here */
+    </style>
+</head>
+<body>
+    {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+
+    <h1>Book Slot</h1>
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <label for="id_date">Date:</label>
+        <input type="date" name="date" id="id_date" required><br>
+        
+        <label for="id_start_time">Start Time:</label>
+        <input type="time" name="start_time" id="id_start_time" required><br>
+        
+        <label for="id_end_time">End Time:</label>
+        <input type="time" name="end_time" id="id_end_time" required><br>
+        
+        <label for="id_phone_number">Phone Number:</label>
+        <input type="text" name="phone_number" id="id_phone_number" required><br>
+
+        <input type="hidden" name="timezone_offset" id="timezone_offset">
+
+        <label for="id_slot_number">Slot Number:</label>
+        <select name="slot_number" id="id_slot_number" required>
+            <option value="">Select Slot Number</option>
+            {% for slot in available_slots %}
+                {% if slot not in booked_slots %}
+                    <option value="{{ slot }}">{{ slot }}</option>
+                {% endif %}
+            {% endfor %}
+        </select><br>
+        
+        <button type="submit">Book Slot</button>
+    </form>
+    <!-- Add any additional HTML content or scripts here -->
+
+    <script>
+        // Get the current timezone offset and set it as the value of the hidden input
+        document.getElementById('timezone_offset').value = new Date().getTimezoneOffset();
+    </script>
+</body>
+</html>

@@ -10,4 +10,7 @@ urlpatterns=[
     path('station_profile/', views.station_profile, name='station_profile'),
     path('view-profile/<str:username>/', views.view_profile, name='view_profile'),
     path('view_details/<int:station_ID>/',views.view_details,name="view_details"),
+     path('book-slot/<int:station_id>/', views.book_slot, name='book_slot'),
+    path('booking-details/', views.booking_details, name='booking_details'),
+
 ]

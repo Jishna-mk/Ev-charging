@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 
 from .models import UserProfile
 from station_app.models import StationProfile
+from django.http import JsonResponse
+
 
 # Create your views here.
 def index(request):
@@ -99,39 +101,52 @@ def view_details(request,station_ID):
 
 from django.utils import timezone
 from .models import Booking
+from .forms import BookingForm
+
+# views.py
+from django.http import JsonResponse
+from django.forms import ValidationError
+
+from django.utils import timezone
+
+
 
 def book_slot(request, station_id):
     station = get_object_or_404(Station, station_ID=station_id)
-
+    available_slots = range(1, station.slots + 1)
+    booked_slots = station.bookings.values_list('slot_number', flat=True)
+    error_message = None
+    
     if request.method == 'POST':
-        date = request.POST.get('date')
-        start_time_str = request.POST.get('start_time')
-        end_time_str = request.POST.get('end_time')
-        phone_number = request.POST.get('phone_number')
-        slots = request.POST.get('slots')  
+        form = BookingForm(request.POST, available_slots=available_slots, booked_slots=booked_slots)
+        if form.is_valid():
+            date = form.cleaned_data['date']
+            start_time_str = form.cleaned_data['start_time']
+            end_time_str = form.cleaned_data['end_time']
+            phone_number = form.cleaned_data['phone_number']
+            timezone_offset = form.cleaned_data['timezone_offset']
 
-        start_time = timezone.make_aware(timezone.datetime.combine(timezone.now().date(), timezone.datetime.strptime(start_time_str, '%H:%M').time()))
-        end_time = timezone.make_aware(timezone.datetime.combine(timezone.now().date(), timezone.datetime.strptime(end_time_str, '%H:%M').time()))
+            # Convert start_time and end_time to datetime objects with correct timezone
+            start_time = timezone.make_aware(timezone.datetime.combine(date, timezone.datetime.strptime(start_time_str, '%H:%M').time()))
+            end_time = timezone.make_aware(timezone.datetime.combine(date, timezone.datetime.strptime(end_time_str, '%H:%M').time()))
 
-        if Booking.objects.filter(station=station, slots=slots,date=date, start_time__lt=end_time, end_time__gt=start_time).exists():
-            error_message = 'This time slot is already booked. Please select another slot.'
-            return render(request, 'viewdetails.html', {'station': station, 'error_message': error_message})
-        
-        booking = Booking(
-            user=request.user,
-            station=station,
-            start_time=start_time,
-            end_time=end_time,
-            date=date,
-            phone_number=phone_number,
-            slots=slots  # Save the number of slots
-        )
-        booking.save()
+            # Check if the selected time slot is already booked
+            if station.bookings.filter(date=date, start_time__lt=end_time, end_time__gt=start_time).exists():
+                error_message = 'This time slot is already booked. Please select another slot.'
+            else:
+                # Create a Booking instance
+                booking = form.save(commit=False)
+                booking.station = station
+                booking.start_time = start_time
+                booking.end_time = end_time
+                booking.save()
 
-        return redirect('booking_details')  # Redirect to the booking details page
+                return redirect('booking_details')
+    else:
+        form = BookingForm(available_slots=available_slots, booked_slots=booked_slots)
 
-    return render(request, 'users/user_booking.html', {'station': station})
-
+    return render(request, 'users/booking.html', {'form': form, 'station': station, 'available_slots': available_slots, 'booked_slots': booked_slots, 'error_message': error_message})
 
 def booking_details(request):
-    return render(request,"users/booking_details.html")
+    # Adjust as needed to display booking details
+    return render(request, "users/booking_details.html")
