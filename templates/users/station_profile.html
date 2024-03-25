@@ -25,7 +25,12 @@
            
             <!-- Add other profile fields as needed -->
 
-            <a href="" class="btn btn-primary">View Messages</a>
+            <p class="my-3 font-weight-bold">Send Message to station</p>
+            <form action="{% url 'send_message'  profile.user.id %}" class="d-flex align-items-center" method="post">
+                {% csrf_token %}
+                <input type="text" class="w-75 border-secondary mr-2 p-2" name="message" placeholder="Enter message here..">
+                <button class="btn btn-primary">Send</button>
+            </form>
           </div>
         </div>
       </div>

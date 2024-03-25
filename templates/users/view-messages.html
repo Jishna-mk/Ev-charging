@@ -1,0 +1,96 @@
+{% extends "users/viewpage.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .inbox-card {
+        background: linear-gradient(to right, #c9f1dd, #c9f1dd);
+        border-radius: 15px;
+        max-width: 400px;
+        margin-left: 50px;
+        
+
+    }
+
+    .outbox-card {
+        background: linear-gradient(to right,#b6c5c0,#b6c5c0);
+        color: rgb(99, 103, 107);
+        border-radius: 15px;
+        max-width: 400px;
+        
+    }
+
+    .badge {
+        border-radius: 50%;
+        background: rgb(240, 102, 70);
+        padding: 5px 20px;
+        margin-left: 50px;
+    }
+</style>
+{% for message in messages %}
+<div class="alert alert-danger alert-dismissible fade show" style="position: fixed;z-index: 90;right:100px;top:10px"
+    role="alert">
+    <strong>{{message}} !!!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+<h2 class="title-subhny mb-2 text-center">View Messages </h2>
+<section class="w3l-bottom-grids-6 py-5" id="services">
+    <div class="container py-lg-5 py-md-4 py-2">
+        
+        <div class="row">
+            <div class="col-6">
+
+                {% if user_messages_count == 0 %}
+                <h3><span>No Outbox Messages Found</span></h3>
+                {% else %}
+                <h3 class="text-center"><span>Outbox</span><span class="badge">{{user_messages_count}}
+                    </span></h3>
+                <div class="grids-area-hny main-cont-wthree-fea row pt-5 mt-5">
+                    {% for v in user_messages %}
+                    <div class="col-12  mb-3 shadow-sm p-2 inbox-card">
+                        <div class="d-flex align-items-center justify-content-between">
+                          {%comment%}
+                            <img src="{{v.company.station_image.url}}" width="50" style="border-radius: 50%;" alt="">
+                            {%endcomment%}
+                            <h5>{{v.message}}</h5>
+                        </div>
+                        <div class="text-right">
+                          <p>To :<span class="font-weight-bold">{{ v.station.user.username }} </span></p>
+
+                            <p>on :<span class="font-weight-bold">{{v.added_Date}} </span></p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-6">
+
+                {% if reply_messages_count == 0 %}
+                <h3><span>No Inbox Messages Found</span> </h3>
+                {% else %}
+                <h3 class="text-center"><span>Inbox</span> <span class="badge"> {{reply_messages_count}} </span>
+                </h3>
+                <div class="grids-area-hny main-cont-wthree-fea row pt-5 mt-5">
+                    {% for v in reply_messages %}
+                    <div class="col-12  mb-3 shadow-sm p-2 outbox-card">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <img src="{{v.company.station_image.url}}" width="50" style="border-radius: 50%;" alt="">
+                            <h5>{{v.message}}</h5>
+                        </div>
+                        <div class="text-right">
+                            <p>From :<span class="font-weight-bold">{{ v.station.user.username }} </span></p>
+                            <p>on :<span class="font-weight-bold">{{v.added_Date}} </span></p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{%endblock%}

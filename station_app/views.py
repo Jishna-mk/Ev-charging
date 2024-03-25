@@ -122,3 +122,97 @@ def delete_station(request,pk):
 def station_profiles(request):
     station_profile=get_object_or_404( StationProfile,user=request.user)
     return render(request,'station/profile.html',{'station_profile':station_profile})   
+
+from users_app.models import Booking
+from django.core.exceptions import ObjectDoesNotExist
+
+
+@login_required
+def bookings(request):
+    user_bookings = Booking.objects.select_related('station').all()
+    return render(request, "station/booking.html", {'user_bookings': user_bookings})
+
+from users_app.models import Message
+
+def send_message_to_user(request):
+    if request.method == "POST":
+        station= get_object_or_404(StationProfile, user=request.user)
+        user_id = request.POST.get("user_id")  # Assuming you have a hidden input with user_id in your form
+        user = get_object_or_404(User, id=user_id)
+        message_text = request.POST["message"]
+
+        # Create a new message with reply set to False for new messages to users
+        Message.objects.create(message=message_text, station=station, user=user, reply=False)
+
+        messages.info(request, "Message Sent")
+        return redirect("view_company_messages")
+
+    # Handle GET requests or other cases
+    return redirect("view_company_messages")
+
+
+def view_company_messages(request):
+    station = get_object_or_404(StationProfile, user=request.user)
+    user_messages = Message.objects.filter(station=station, reply=False)
+    reply_messages = Message.objects.filter(station=station, reply=True)
+    user_messages_count = user_messages.count()
+    reply_messages_count = reply_messages.count()
+    return render(request, "station/view-messages.html", {
+        "user_messages": user_messages,
+        "reply_messages": reply_messages,
+        "user_messages_count": user_messages_count,
+        "reply_messages_count": reply_messages_count
+    })
+
+def reply_message(request, id):
+    if request.method == "POST":
+        station = get_object_or_404(StationProfile, user=request.user)
+        user = get_object_or_404(User, id=id)
+        message_text = request.POST["message"]
+
+        # Create a new message with reply set to True for user's sent messages
+        Message.objects.create(message=message_text, station=station, user=user, reply=True)
+
+        messages.info(request, "Message Sent")
+        return redirect("view_company_messages")        
+# from users_app.models import UserProfile
+# def send_message_to_user(request):
+#     if request.method == "POST":
+#         station_profile = get_object_or_404(UserProfile, user=request.user)
+#         message_text = request.POST.get("message")
+#         user_id = request.POST.get("user_id")
+#         user_profile = get_object_or_404(UserProfile, id=user_id)
+
+#         # Create a new message with reply set to False for new messages to users
+#         Message.objects.create(message=message_text, station=station_profile.station, user=user_profile.user, reply=False)
+
+#         messages.info(request, "Message Sent")
+#         return redirect("view_company_messages")
+
+#     # Handle GET requests or other cases
+#     return redirect("view_company_messages")
+
+# def view_company_messages(request):
+#     station_profile = get_object_or_404(UserProfile, user=request.user)
+#     user_messages = Message.objects.filter(station=station_profile.station, reply=False)
+#     reply_messages = Message.objects.filter(station=station_profile.station, reply=True)
+#     user_messages_count = user_messages.count()
+#     reply_messages_count = reply_messages.count()
+#     return render(request, "company/view-messages.html", {
+#         "user_messages": user_messages,
+#         "reply_messages": reply_messages,
+#         "user_messages_count": user_messages_count,
+#         "reply_messages_count": reply_messages_count
+#     })
+
+# def reply_message(request, id):
+#     if request.method == "POST":
+#         station_profile = get_object_or_404(UserProfile, user=request.user)
+#         user_profile = get_object_or_404(UserProfile, id=id)
+#         message_text = request.POST["message"]
+
+#         # Create a new message with reply set to True for user's sent messages
+#         Message.objects.create(message=message_text, station=station_profile.station, user=user_profile.user, reply=True)
+
+#         messages.info(request, "Message Sent")
+#         return redirect("view_company_messages")

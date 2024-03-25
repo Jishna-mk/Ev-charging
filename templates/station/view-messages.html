@@ -1,0 +1,99 @@
+{% extends "station/details.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .inbox-card {
+        background: linear-gradient(to right, #c9f1dd, #c9f1dd);
+        border-radius: 15px;
+        max-width: 400px;
+        border: 1px solid black;
+       
+    }
+
+    .outbox-card {
+        background: linear-gradient(to right,#b6c5c0,#b6c5c0);
+        color: rgb(4, 48, 88);
+        border-radius: 15px;
+        max-width: 400px;
+        margin-left: 50px;
+        border: 1px solid black;
+    }
+
+    .badge {
+        border-radius: 50%;
+        background: rgb(237, 118, 53);
+        padding: 5px 20px;
+        margin-left: 50px;
+    }
+</style>
+
+{% for message in messages %}
+<div class="alert alert-danger alert-dismissible fade show" style="position: fixed;z-index: 90;right:100px;top:10px"
+    role="alert">
+    <strong>{{message}} !!!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+<h2 class="title-subhny mb-2 text-center">View Messages </h2>
+<section class="w3l-bottom-grids-6 py-5" id="services">
+    <div class="container py-lg-5 py-md-4 py-2">
+        
+        <div class="row">
+            <div class="col-6">
+                <h3 class="text-center"><span>Outbox</span> <span class="badge"> {{reply_messages_count}} </span></h3>
+                {% if reply_messages_count == 0 %}
+                <h3><span>No Outbox Messages Found</span> </h3>
+                {% else %}
+                <div class="grids-area-hny main-cont-wthree-fea row pt-5 mt-5">
+                    {% for v in reply_messages %}
+                    <div class="col-12  mb-3 shadow-sm p-3 outbox-card">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <img src="{{v.company.Company_image.url}}" width="50" style="border-radius: 50%;" alt="">
+                            <h4>{{v.message}}</h4>
+                        </div>
+                        <div class="text-right">
+                            <p style="color: rgb(226, 43, 195);">To :<span class="font-weight-bold" style="color: rgb(44, 3, 83);">{{v.user.username }} </span></p>
+                            <p style="color: rgb(226, 43, 195);">on :<span class="font-weight-bold" style="color: rgb(44, 3, 83);">{{v.added_Date}} </span></p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="col-6">
+                {% if user_messages_count == 0 %}
+                <h3><span>No Inbox Messages Found</span></h3>
+                {% else %}
+                <h3 class="text-center"><span>Inbox </span><span class="badge"> {{user_messages_count}}
+                    </span> </h3>
+                <div class="grids-area-hny main-cont-wthree-fea row pt-5 mt-5">
+                    {% for v in user_messages %}
+                    <div class="col-12 mb-3 shadow-sm p-3 inbox-card">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4><a href="#feature" class="title-head fw-bold text-info">{{v.message}}</a></h4>
+                        </div>
+                        <div class="text-right">
+                            <p style="color: rgb(21, 24, 192);">To :<span class="font-weight-bold" style="color: rgb(44, 3, 83);">{{v.user.username}} </span></p>
+                            <p style="color: rgb(21, 24, 192);">on :<span class="font-weight-bold" style="color: rgb(44, 3, 83);">{{v.added_Date}} </span></p>
+                        </div>
+                        <!-- Reply Form -->
+                        <form method="post" action="{% url 'reply_message' v.user.id %}"
+                            class="d-flex justify-content-end mt-3">
+                            {% csrf_token %}
+                            <input type="text" class="border-0 px-2 " placeholder="Enter Your Reply" name="message"
+                                required>
+                            <button class="btn btn-primary">Send</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{%endblock%}

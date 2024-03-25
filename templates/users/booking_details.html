@@ -1,0 +1,70 @@
+{% extends "users/viewpage.html" %}
+{%load static%}
+{% block content %}
+<div class="container">
+
+        <button id="pay-button" class="button  mt-2 razorpay" style="border: none; background-color: rgb(66, 183, 222); border-radius: 5px; padding: 5px;">
+          <span>
+              <img src="{%static '/img/razor.png' %}" height="30px" width="50px" alt="" class="me-2" style="margin-top: 10px; ">
+              Pay Now
+          </span>
+      </button>
+    <h1>Booking Details</h1>
+
+
+    {% if user_bookings %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Station Name</th>
+                    <th>Slot Number</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Date</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in user_bookings %}
+                <tr>
+                    <td>{{ booking.station.station_name }}</td>
+                    <td>{{ booking.slot_number }}</td>
+                    <td>{{ booking.start_time }}</td>
+                    <td>{{ booking.end_time }}</td>
+                    <td>{{ booking.date }}</td>
+                    <td>{{ booking.phone_number }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No bookings found.</p>
+    {% endif %}
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        key: 'rzp_test_9tCOZuKLhiZdaM',
+        amount: 500, // Amount in paise (50000 paise = ₹500)
+        currency: 'INR',
+        name: 'Demo Store',
+        description: 'Payment for your order',
+        image: 'https://example.com/logo.png', // URL of your store's logo
+        order_id: '{{ razorpay_order_id }}', // Replace with your actual order ID
+        callback_url: '{{ callback_url }}', // Replace with your actual callback URL
+        prefill: {
+            name: 'student',
+            email: 'student@example.com'
+        }
+    };
+
+    var rzp = new Razorpay(options);
+
+    document.getElementById('pay-button').onclick = function () {
+        rzp.open();
+    };
+</script>
+{%endblock%}

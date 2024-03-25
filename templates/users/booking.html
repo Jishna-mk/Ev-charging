@@ -1,54 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Slot</title>
-    <!-- Add any CSS stylesheets or links here -->
-    <style>
-        /* Add your CSS styling here */
-    </style>
-</head>
-<body>
-    {% if error_message %}
-    <p style="color: red;">{{ error_message }}</p>
-    {% endif %}
+{% extends "users/viewpage.html" %}
+{% block content %}
+<h1 class="text-center text-primary-emphasis">Book Slot</h1>
 
-    <h1>Book Slot</h1>
+{% if form.errors %}
+<ul>
+    {% for field, errors in form.errors.items %}
+    <li><strong>{{ field }}:</strong>
+        <ul>
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% for message in messages %}
+<div class="alert alert-danger alert-dismissible fade show" style="position: fixed;z-index: 90;right:100px;top:10px"
+    role="alert">
+    <strong>{{message}} !!!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+<div class="border border-dark p-5 rounded-4 border-0 shadow-lg container col-md-6 mx-auto w-4" style="width: 400px; margin: auto;">
     <form method="post">
         {% csrf_token %}
-        <br>
-        <label for="id_date">Date:</label>
-        <input type="date" name="date" id="id_date" required><br>
-        
-        <label for="id_start_time">Start Time:</label>
-        <input type="time" name="start_time" id="id_start_time" required><br>
-        
-        <label for="id_end_time">End Time:</label>
-        <input type="time" name="end_time" id="id_end_time" required><br>
-        
-        <label for="id_phone_number">Phone Number:</label>
-        <input type="text" name="phone_number" id="id_phone_number" required><br>
+        <label for="id_date" class="text-primary">Date:</label>
+        <input type="date" name="date" id="id_date" required><br><br>
 
-        <input type="hidden" name="timezone_offset" id="timezone_offset">
+        <label for="id_start_time" class="text-primary">Start Time:</label>
+        <input type="text" name="start_time" id="id_start_time" required><br><br>
 
-        <label for="id_slot_number">Slot Number:</label>
+        <label for="id_end_time" class="text-primary">End Time:</label>
+        <input type="text" name="end_time" id="id_end_time" required><br><br>
+
+        <label for="id_phone_number" class="text-primary">Phone Number:</label>
+        <input type="text" name="phone_number" id="id_phone_number" required><br><br>
+
+        <label for="id_slot_number" class="text-primary">Slot Number:</label>
         <select name="slot_number" id="id_slot_number" required>
             <option value="">Select Slot Number</option>
             {% for slot in available_slots %}
-                {% if slot not in booked_slots %}
-                    <option value="{{ slot }}">{{ slot }}</option>
-                {% endif %}
+            <option value="{{ slot }}">{{ slot }}</option>
             {% endfor %}
-        </select><br>
-        
-        <button type="submit">Book Slot</button>
-    </form>
-    <!-- Add any additional HTML content or scripts here -->
+        </select><br><br>
 
-    <script>
-        // Get the current timezone offset and set it as the value of the hidden input
-        document.getElementById('timezone_offset').value = new Date().getTimezoneOffset();
-    </script>
-</body>
-</html>
+        <button type="submit" class="btn rounded-pill btn-dark">Book Slot</button>
+    </form>
+</div>
+{% endblock %}

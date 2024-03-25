@@ -93,7 +93,7 @@
                         <div class="navbar-nav mr-auto">
                             <a href="{%url 'index' %}" class="nav-item nav-link active">Home</a>
                  
-                            <a href="{%url 'view_stations' %}" class="nav-item nav-link">View Station</a>
+                            <a href="{%url 'viewpage' %}" class="nav-item nav-link">View Station</a>
                             <li class="nav-item">
                                 {% if request.user.userprofile %}
                                     <a class="nav-link" href="{% url 'view_profile' username=request.user.username %}">Profile</a>
@@ -102,7 +102,7 @@
                                 {% endif %}
                             </li>
                             <a href="{%url 'station_profile' %}" class="nav-item nav-link">Station profile</a>
-                            <a href="" class="nav-item nav-link">view Bookings</a>
+                            <a href="{%url 'booking_details' %}" class="nav-item nav-link">view Bookings</a>
                         </div>
                        
                         <div class="ml-auto">
@@ -119,7 +119,8 @@
     <div class="row">
         {% for station in stations %}
         <div class="col-md-6 mb-4">
-            <div class="card" style="width: 18rem;">
+            <div class="card h-100 border border-dark  rounded-4 border-0 shadow-lg
+            " style="width: 18rem;">
                 <img src="{{ station.station_image.url }}" class="card-img-top" alt="Station Image">
                 <div class="card-body">
                     <h5 class="card-title">{{ station.station_name }}</h5>

@@ -1,0 +1,38 @@
+{% extends "station/details.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Bookings</h1>
+    {% if user_bookings %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Station Name</th>
+                        <th>Slot Number</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Date</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in user_bookings %}
+                        <tr>
+                            <td>{{ booking.station.station_name }}</td>
+                            <td>{{ booking.slot_number }}</td>
+                            <td>{{ booking.start_time }}</td>
+                            <td>{{ booking.end_time }}</td>
+                            <td>{{ booking.date }}</td>
+                            <td>{{ booking.phone_number }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No bookings found.</p>
+    {% endif %}
+</div>
+{% endblock %}
