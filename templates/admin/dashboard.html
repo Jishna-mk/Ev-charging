@@ -86,8 +86,8 @@
             <li><a href="#"><h1>Dashboard</h1></a></li>
             
             
-            <li><a href="">Bookings</a></li><br>
-            <li><a href="">Stations</a></li><br><br>
+            <li><a href="{%url 'all_bookings'%}">Bookings</a></li><br>
+            <li><a href="{%url 'dashboard' %}">Stations</a></li><br><br>
             <li><a href="{%url 'admin_signout' %}">Sign out</a></li>
             <!-- Add more links as needed -->
         </ul>
@@ -100,25 +100,26 @@
 <h2 class="text-center">Admin Dashboard</h2>
         <main id="main">
             <div class="row">
-                <!-- Total Users Count Box -->
+                <!-- Total Stations Count Box -->
                 <div class="col-md-4">
                     <div class="count-box total-turfs-box">
-                        
+                        <h3>Total stations: {{ total_station }}</h3>
                     </div>
                 </div>
+                <!-- Total Users Count Box -->
                 <div class="col-md-4">
                     <div class="count-box total-users-box">
-                     
+                        <h3>Total Users: {{ total_users }}</h3>
                     </div>
                 </div>
                 <!-- Total Bookings Count Box -->
                 <div class="col-md-4">
                     <div class="count-box total-bookings-box">
-                      
+                        <h3>Total bookings: {{ total_book }}</h3>
                     </div>
                 </div>
             </div>
-
+            
             <!-- Managers List Section -->
             <section id="managers-list" class="managers-list">
                 <div class="container" data-aos="fade-up">
@@ -149,6 +150,9 @@
                                             <a href="{% url 'approvestation' st.user.id %}" class="btn btn-success">Approve</a>
 
                                             {% endif %}
+                                            <a href="{% url 'removestation' st.user.id %}"
+                                            class="btn btn-danger m-2"
+                                            onclick="return confirm('Confirm removing this station?')">Remove</a>
                                            
                                         </td>
                                     </tr>

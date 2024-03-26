@@ -232,6 +232,18 @@ def book_slot(request, station_id):
 
     return render(request, 'users/booking.html', {'form': form, 'station': station, 'available_slots': available_slots, 'booked_slots': booked_slots, 'error_message': error_message})
 
+
+@login_required
+def cancel_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    # Check if the booking belongs to the current user
+   
+
+    # Delete the booking
+    booking.delete()
+    messages.success(request, "Booking canceled successfully.")
+    return redirect('booking_details')
 from .models import Message
 # @user_only 
 from .decorators import user_only

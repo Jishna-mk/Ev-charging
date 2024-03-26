@@ -17,7 +17,7 @@
           <p>Phone No: {{ station.station_phone }}</p>
           <p>Email: {{ station.station_email }}</p>
           <p>Area: {{ station.station_area }}</p>
-          <a href="" class="btn btn-primary mt-4">Enquire Now</a>
+          <a href="{%url 'station_profile' %}" class="btn btn-success mt-4">Enquire Now</a>
           <a href="{% url 'book_slot' station.station_ID %}" class="btn btn-primary mt-4">Book Now</a>
         </div>
       </div>

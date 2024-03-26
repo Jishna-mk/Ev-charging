@@ -127,10 +127,53 @@ from users_app.models import Booking
 from django.core.exceptions import ObjectDoesNotExist
 
 
+# @login_required
+# def bookings(request):
+#     user_bookings = Booking.objects.select_related('station').all()
+#     return render(request, "station/booking.html", {'user_bookings': user_bookings})
 @login_required
 def bookings(request):
+    # Retrieve all bookings with related station information
     user_bookings = Booking.objects.select_related('station').all()
-    return render(request, "station/booking.html", {'user_bookings': user_bookings})
+    
+    # Group bookings by station names
+    grouped_bookings = {}
+    for booking in user_bookings:
+        station_name = booking.station.station_name
+        if station_name not in grouped_bookings:
+            grouped_bookings[station_name] = []
+        grouped_bookings[station_name].append(booking)
+
+    return render(request, "station/booking.html", {'grouped_bookings': grouped_bookings})
+# @login_required
+# def bookings(request):
+#     # Retrieve the current user's bookings
+#     user = request.user
+#     user_bookings = Booking.objects.select_related('station').filter(user=user)
+    
+#     # Group bookings by station names
+#     grouped_bookings = {}
+#     for booking in user_bookings:
+#         station_name = booking.station.station_name
+#         if station_name not in grouped_bookings:
+#             grouped_bookings[station_name] = []
+#         grouped_bookings[station_name].append(booking)
+
+#     return render(request, "station/booking.html", {'grouped_bookings': grouped_bookings})
+
+
+# @login_required
+# def bookings(request):
+#     # Get the current user's station profile
+#     station_profile = get_object_or_404(StationProfile, user=request.user)
+    
+#     # Get the station associated with the user's station profile
+#     station = station_profile.station
+    
+#     # Filter bookings related to the station
+#     user_bookings = Booking.objects.select_related('station').filter(station=station)
+    
+#     return render(request, "station/booking.html", {'user_bookings': user_bookings})
 
 from users_app.models import Message
 
